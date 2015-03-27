@@ -61,6 +61,7 @@ void loop() {
     FastLED.show();
   }
   else { // If serial data is idle just show a standard rotating rainbow.
+    FastLED.setBrightness(BRIGHTNESS); // Set brightness to defined level when idle
     rainbow();
     FastLED.show();
     EVERY_N_MILLISECONDS( 20 ) {
