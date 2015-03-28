@@ -6,13 +6,13 @@
 #define DATA_PIN    9
 //#define CLK_PIN   4
 #define LED_TYPE    TM1803
-#define COLOR_ORDER RBG // Reversed for styling. My default is GBR
+#define COLOR_ORDER GBR // Reversed for styling. My default is GBR
 #define NUM_LEDS    10
 CRGB leds[NUM_LEDS];
 
 #define BRIGHTNESS          36
 #define FRAMES_PER_SECOND  120 // This limit can improve performance and reduce the chance of overflow lag.
-
+#define AVG                true
 
 uint8_t gHue = 0;
 byte temp;
@@ -37,13 +37,14 @@ byte limit(byte in) {
   }
   return round(in); // Bypassing this function until better math is performed... -_-
 }
-
-
+int lvl = 1;      // Level of spectrum to analyze
+int data[9];      // raw serial data array
+int isData = 0;
+uint16_t averg = 0;
+byte processedData = 0;
 void loop() {
 
-  int lvl = 1;      // Level of spectrum to analyze
-  int data[9];      // raw serial data array
-  int isData = 0;
+  
   if (Serial.available() > 10) {
     byte i = Serial.read();
     if (int(i) == 255) {
@@ -51,12 +52,19 @@ void loop() {
         data[c] = int(Serial.read()); // Build array with all levels of data (even though we only use one at a time now, the rest of the spectral data can be used for further programming later)
         isData = 1;
       }
+      processedData = data[lvl];
     }
   }
-
+  if (AVG){
+    for (int j = 0; j <= 9; j++){
+      averg += data[j];
+    }
+    averg = round(averg / 9);
+    processedData = averg;
+  }
   if (isData == 1) {
-    FastLED.setBrightness(limit(data[lvl]));
-    gHue = limit(data[lvl]);
+    FastLED.setBrightness(limit(processedData));
+    gHue = limit(processedData);
     rainbow();
     FastLED.show();
   }
