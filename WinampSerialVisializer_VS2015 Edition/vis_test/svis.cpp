@@ -251,6 +251,7 @@ winampVisModule *g_mod = NULL;
 
 int width;
 int height;
+std::string portx;
 
 // initialization. Registers our window class, creates our window, etc. Again, this one works for
 // both modules, but you could make init1() and init2()...
@@ -272,9 +273,8 @@ int init(struct winampVisModule *this_mod)
 	//lpszPortName = const_cast<char *>(port.c_str());
 
 	// This would normally work but for some reason causes corruption of the string and doesn't connect properly:
-
+	portx = getComPort();
 	if (overrideCom == NULL || overrideCom[0] == 0){
-		std::string portx = getComPort();
 		lpszPortName = const_cast<char *>(portx.c_str());
 		succss = true;
 	}
