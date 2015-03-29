@@ -15,6 +15,7 @@ CRGB leds[NUM_LEDS];
 #define AVG                true
 
 uint8_t gHue = 0;
+uint8_t gOffset = 0;
 byte temp;
 
 void setup()
@@ -64,9 +65,12 @@ void loop() {
   }
   if (isData == 1) {
     FastLED.setBrightness(limit(processedData));
-    gHue = limit(processedData);
+    gHue = limit(processedData) + gOffset;
     rainbow();
     FastLED.show();
+    EVERY_N_MILLISECONDS( 40 ) {
+      gOffset++;
+    }
   }
   else { // If serial data is idle just show a standard rotating rainbow.
     FastLED.setBrightness(BRIGHTNESS); // Set brightness to defined level when idle
