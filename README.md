@@ -1,4 +1,13 @@
 # FastLED-Serial-Music-Arduino
+
+
+Update: You can use the included binaries for the plugin, I've edited the code to allow for it to detect the arduino unless you have multiple ports besides COM1 -- in which case I also included an INI file that you can use to override the port name:
+
+```
+overrideCom=COM5
+```
+
+
 Uses serial data input by a Winamp plugin from music for awesome visualization effects for your LED strips. Uses FastLED.h 
 
 
