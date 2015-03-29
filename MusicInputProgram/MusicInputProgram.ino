@@ -64,8 +64,9 @@ void loop() {
     processedData = averg;
   }
   if (isData == 1) {
-    FastLED.setBrightness(limit(processedData));
-    gHue = limit(processedData) + gOffset;
+    }
+    FastLED.setBrightness(zdata);
+    gHue = zdata + gOffset;
     rainbow();
     FastLED.show();
     EVERY_N_MILLISECONDS( 40 ) {
