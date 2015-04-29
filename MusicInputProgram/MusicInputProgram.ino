@@ -44,14 +44,14 @@ int isData = 0;
 uint16_t averg = 0;
 byte processedData = 0;
 void loop() {
-
-  
   if (Serial.available() > 10) {
     byte i = Serial.read();
     if (int(i) == 255) {
       for (int c = 0; c < 9; c++) {
         data[c] = int(Serial.read()); // Build array with all levels of data (even though we only use one at a time now, the rest of the spectral data can be used for further programming later)
-        isData = 1;
+        if (data[c] != 0){
+          isData = 1;
+        }
       }
       processedData = data[lvl];
     }
@@ -64,9 +64,8 @@ void loop() {
     processedData = averg;
   }
   if (isData == 1) {
-    }
-    FastLED.setBrightness(zdata);
-    gHue = zdata + gOffset;
+    FastLED.setBrightness(processedData);
+    gHue = processedData + gOffset;
     rainbow();
     FastLED.show();
     EVERY_N_MILLISECONDS( 40 ) {
