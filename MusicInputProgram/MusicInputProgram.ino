@@ -62,6 +62,9 @@ void loop() {
     }
     averg = round(averg / 9);
     processedData = averg;
+    if (processedData < 10){
+      processedData = 10; 
+    }
   }
   if (isData == 1) {
     FastLED.setBrightness(processedData);
